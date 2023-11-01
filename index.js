@@ -94,10 +94,7 @@ app.get("/bearerToken", async (req, res) => {
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
-    console.error("Failed to make request:", error.message);
-    res.render("index.ejs", {
-      error: error.message,
-    });
+    res.status(404).send("Error:", error.message);
   }
 });
 
