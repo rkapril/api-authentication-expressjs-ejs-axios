@@ -3,7 +3,7 @@ import axios from "axios";
 
 const app = express();
 const port = 3000;
-const API_URL = "https://secrets-api.appbrewery.com/";
+const API_URL = "https://secrets-api.appbrewery.com";
 
 //TODO 1: Fill in your values for the 3 types of auth.
 const yourUsername = "test";
@@ -20,9 +20,7 @@ app.get("/noAuth", async (req, res) => {
   //The data you get back should be sent to the ejs file as "content"
   //Hint: make sure you use JSON.stringify to turn the JS object from axios into a string.
   try {
-    const response = await axios.get(
-      "https://secrets-api.appbrewery.com/random"
-    );
+    const response = await axios.get(API_URL + "/random");
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
@@ -47,15 +45,12 @@ app.get("/basicAuth", async (req, res) => {
     });
   */
   try {
-    const response = await axios.get(
-      "https://secrets-api.appbrewery.com/all?page=1",
-      {
-        auth: {
-          username: yourUsername,
-          password: yourPassword,
-        },
-      }
-    );
+    const response = await axios.get(API_URL + "/all?page=2", {
+      auth: {
+        username: yourUsername,
+        password: yourPassword,
+      },
+    });
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
@@ -72,7 +67,7 @@ app.get("/apiKey", async (req, res) => {
   //HINT: You need to provide a query parameter of apiKey in the request.
   try {
     const response = await axios.get(
-      `https://secrets-api.appbrewery.com/filter?score=5&apiKey=${yourAPIKey}`
+      `${API_URL}/filter?score=5&apiKey=${yourAPIKey}`
     );
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
@@ -97,14 +92,11 @@ app.get("/bearerToken", async (req, res) => {
   });
   */
   try {
-    const response = await axios.get(
-      "https://secrets-api.appbrewery.com/secrets/42",
-      {
-        headers: {
-          Authorization: `Bearer ${yourBearerToken}`,
-        },
-      }
-    );
+    const response = await axios.get(API_URL + "/secrets/42", {
+      headers: {
+        Authorization: `Bearer ${yourBearerToken}`,
+      },
+    });
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
