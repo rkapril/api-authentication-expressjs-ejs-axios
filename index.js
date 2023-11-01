@@ -24,10 +24,7 @@ app.get("/noAuth", async (req, res) => {
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
-    console.error("Failed to make request:", error.message);
-    res.render("index.ejs", {
-      error: error.message,
-    });
+    res.status(404).send("Error:", error.message);
   }
 });
 
@@ -54,10 +51,7 @@ app.get("/basicAuth", async (req, res) => {
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
-    console.error("Failed to make request:", error.message);
-    res.render("index.ejs", {
-      error: error.message,
-    });
+    res.status(404).send("Error:", error.message);
   }
 });
 
@@ -66,16 +60,16 @@ app.get("/apiKey", async (req, res) => {
   //Filter for all secrets with an embarassment score of 5 or greater
   //HINT: You need to provide a query parameter of apiKey in the request.
   try {
-    const response = await axios.get(
-      `${API_URL}/filter?score=5&apiKey=${yourAPIKey}`
-    );
+    const response = await axios.get(API_URL + "/filter", {
+      params: {
+        score: 5,
+        apiKey: yourAPIKey,
+      },
+    });
     const result = JSON.stringify(response.data);
     res.render("index.ejs", { content: result });
   } catch (error) {
-    console.error("Failed to make request:", error.message);
-    res.render("index.ejs", {
-      error: error.message,
-    });
+    res.status(404).send("Error:", error.message);
   }
 });
 
